@@ -1,26 +1,17 @@
 import itertools
 
-# 定义字符集
-characters = "abcdefghijklmnopqrstuvwxyz0123456789"
-
-# 用于存储满足条件的数据
-output_data = []
-
-def generate_combinations(prefix, length):
-    if length == 0:
-        output_data.append(prefix)
-        return
-    for char in characters:
-        generate_combinations(prefix + char, length - 1)
-
 # 生成所有可能的组合
-generate_combinations("", 4)
+combinations = []
+for first_char in 'abcdefghijklmnopqrstuvwxyz':
+    for char_2 in 'abcdefghijklmnopqrstuvwxyz0123456789':
+        for char_3 in 'abcdefghijklmnopqrstuvwxyz0123456789':
+            for char_4 in 'abcdefghijklmnopqrstuvwxyz0123456789':
+                combination = first_char + char_2 + char_3 + char_4
+                combinations.append(combination)
 
-# 过滤并保存符合条件的组合
-filtered_data = [combo for combo in output_data if (combo[0] == 'a' and combo[1:].count('b') == 3) or (combo[0] == 'a' and combo[1:].count('a') == 3)]
+# 过滤出符合条件的组合
+filtered_combinations = [combo for combo in combinations if any(combo[i] == combo[i+1] for i in range(3))]
 
-# 输出数据到文件
-with open("4l.txt", "w") as file:
-    file.write("\n".join(filtered_data))
-
-print(f"已生成并保存 {len(filtered_data)} 条数据到 4l.txt 文件。")
+# 将符合条件的组合保存到文件
+with open('4l.txt', 'w') as file:
+    file.write('\n'.join(filtered_combinations))
