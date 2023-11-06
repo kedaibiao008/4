@@ -1,17 +1,18 @@
 import itertools
 
-def generate_combinations():
-    for first_char in 'abcdefghijklmnopqrstuvwxyz':
-        for second_char in 'abcdefghijklmnopqrstuvwxyz0123456789':
-            for third_char in 'abcdefghijklmnopqrstuvwxyz0123456789':
-                for fourth_char in 'abcdefghijklmnopqrstuvwxyz0123456789':
-                    yield f"{first_char}{second_char}{third_char}{fourth_char}"
+# 生成所有可能的组合
+combinations = []
+for first_char in 'abcdefghijklmnopqrstuvwxyz':
+    for chars234 in itertools.product('abcdefghijklmnopqrstuvwxyz0123456789', repeat=3):
+        combination = first_char + ''.join(chars234)
+        combinations.append(combination)
 
-def main():
-    with open('4l.txt', 'w') as file:
-        for combination in generate_combinations():
-            if combination[1:4] == combination[0] * 3:
-                file.write(combination + '\n')
+# 过滤符合条件的组合
+filtered_combinations = [comb for comb in combinations if any(comb[i] == comb[i+1] == comb[i+2] for i in range(2))]
 
-if __name__ == '__main__':
-    main()
+# 将符合条件的组合保存到文件
+with open('4l.txt', 'w') as file:
+    for comb in filtered_combinations:
+        file.write(comb + '\n')
+
+print(f'已保存 {len(filtered_combinations)} 个符合条件的组合到 4l.txt 文件.')
